@@ -1,61 +1,118 @@
+# Rime 全域自訂設定檔
+# 此檔案用於覆蓋 default.yaml 中的預設設定
+# 修改後需要「重新部署」才會生效
+
 customization:
   distribution_code_name: Weasel
   distribution_version: 0.11.1
   generator: "Rime::SwitcherSettings"
   modified_time: "Tue Jun  5 12:55:24 2018"
   rime_version: 1.3.0
+
+# 以下為自訂設定內容
 patch:
+  # ========================================
+  # 候選選單設定
+  # ========================================
   menu:
-    alternative_select_keys: "0123456789" #重碼選擇鍵，如沒有寫-預設 ctrl+123456789\
-    page_size: 7	#選單 每頁 顯示 個數
+    # 重碼選擇鍵：可直接用數字鍵 0-9 選字
+    # 如未設定，預設為 Ctrl+數字鍵
+    alternative_select_keys: "0123456789"
+    # 選單每頁顯示的候選字數量
+    page_size: 7
+  # ========================================
+  # ASCII 模式（英文輸入）設定
+  # ========================================
   ascii_composer:
+    # 保留 Caps Lock 的傳統大寫鎖定功能
     good_old_caps_lock: true
-    switch_key: {Caps_Lock: noop, Control_L: noop, Control_R: noop, Eisu_toggle: clear, Shift_L: clear, Shift_R: clear}
+    # 中英文切換按鍵設定
+    # noop: 不做動作
+    # clear: 切換為英文模式
+    switch_key:
+      Caps_Lock: noop      # Caps Lock 不切換中英文
+      Control_L: noop      # 左 Ctrl 不切換
+      Control_R: noop      # 右 Ctrl 不切換
+      Eisu_toggle: clear   # Eisu 鍵切換為英文
+      Shift_L: clear       # 左 Shift 切換為英文
+      Shift_R: clear       # 右 Shift 切換為英文
+  # ========================================
+  # 輸入方案列表
+  # ========================================
+  # 定義可用的輸入方案，按 Ctrl+` 或 F4 可切換
   schema_list:
-    - schema: liur
-    - schema: luna_pinyin
-    - schema: luna_pinyin_simp
-    - schema: luna_pinyin_fluency
-    - schema: bopomofo
-    - schema: bopomofo_tw
-    - schema: cangjie5
-    - schema: stroke
-    - schema: terra_pinyin
-    # - schema: liur_Trad
+    - schema: liur                    # 嘸蝦米
+    - schema: luna_pinyin             # 朙月拼音（繁體）
+    - schema: luna_pinyin_simp        # 朙月拼音（簡體）
+    - schema: luna_pinyin_fluency     # 語句流拼音
+    - schema: bopomofo                # 注音
+    - schema: bopomofo_tw             # 注音（臺灣正體）
+    - schema: cangjie5                # 倉頡五代
+    - schema: stroke                  # 五筆畫
+    - schema: terra_pinyin            # 地球拼音
+    # - schema: liur_Trad             # 嘸蝦米（純繁體）
+  # ========================================
+  # 方案選單設定
+  # ========================================
   switcher:
+    # 是否縮寫選項名稱
     abbreviate_options: false
+    # 選單標題文字
     caption: "〔方案選單〕"
+    # 是否摺疊選項
     fold_options: false
+    # 喚起方案選單的快速鍵
+    # Control+grave: Ctrl+`
+    # Control+Shift+grave: Ctrl+Shift+`
     hotkeys: ["Control+grave", "Control+Shift+grave"]
+  # ========================================
+  # 按鍵綁定設定
+  # ========================================
   key_binder:
     bindings:
-    # ↓ 以下2條爲空碼時按空格鍵清空輸入碼（首先需要關閉碼表輸入法連打，
-    # ↓ 即在輸入方案配置中設置enable_sentence: false）
-    - { when: composing, accept: space, send: Escape }
-    - { when: has_menu, accept: space, send: space }
-    # - { when: has_menu, accept: comma, send: comma }	#輸入,
-    # - { when: has_menu, accept: minus, send: minus }		# 輸入-
-    # - { when: has_menu, accept: equal, send: equal }		# 輸入=
-    - { accept: period, send: period, when: has_menu }		# 輸入.
-    - { accept: "Control+period", toggle: simplification, when: always }	#進行簡繁切換
-    - { accept: "Control+apostrophe", toggle: liu_w2c, when: always }	#顯示同音字
-    - { accept: "Control+slash", toggle: extended_charset, when: always}
-    - { accept: "Shift+space", toggle: full_shape, when: always}
-    # Emacs style
-    - { when: composing, accept: Control+p, send: Up }
-    - { when: composing, accept: Control+n, send: Down }
-    - { when: composing, accept: Control+b, send: Left }
-    - { when: composing, accept: Control+f, send: Right }
-    - { when: composing, accept: Control+a, send: Home }
-    - { when: composing, accept: Control+e, send: End }
-    - { when: composing, accept: Control+d, send: Delete }
-    - { when: composing, accept: Control+k, send: Shift+Delete }
-    - { when: composing, accept: Control+h, send: BackSpace }
-    - { when: composing, accept: Control+g, send: Escape }
-    - { when: composing, accept: Control+bracketleft, send: Escape }
-    - { when: composing, accept: Alt+v, send: Page_Up }
-    - { when: composing, accept: Control+v, send: Page_Down }
-    # move by word
-    - { when: composing, accept: ISO_Left_Tab, send: Shift+Left }
-    - { when: composing, accept: Shift+Tab, send: Shift+Left }
-    - { when: composing, accept: Tab, send: Shift+Right }
+    # ----------------------------------------
+    # 空格鍵行為設定
+    # ----------------------------------------
+    # 以下兩條設定實現：空碼時按空格鍵清空輸入碼
+    # 注意：需要在輸入方案中設置 enable_sentence: false
+    - { when: composing, accept: space, send: Escape }  # 輸入中按空格清空
+    - { when: has_menu, accept: space, send: space }    # 有選單時按空格上字
+
+    # ----------------------------------------
+    # 標點符號輸入
+    # ----------------------------------------
+    # - { when: has_menu, accept: comma, send: comma }  # 輸入逗號 ,
+    # - { when: has_menu, accept: minus, send: minus }  # 輸入減號 -
+    # - { when: has_menu, accept: equal, send: equal }  # 輸入等號 =
+    - { accept: period, send: period, when: has_menu }  # 輸入句號 .
+
+    # ----------------------------------------
+    # 功能切換快速鍵
+    # ----------------------------------------
+    - { accept: "Control+period", toggle: simplification, when: always }      # Ctrl+. 簡繁切換
+    - { accept: "Control+apostrophe", toggle: liu_w2c, when: always }         # Ctrl+' 字碼反查
+    - { accept: "Control+slash", toggle: extended_charset, when: always }     # Ctrl+/ 擴充字集
+    - { accept: "Shift+space", toggle: full_shape, when: always }             # Shift+空格 全半形切換
+    # ----------------------------------------
+    # Emacs 風格編輯快速鍵
+    # ----------------------------------------
+    - { when: composing, accept: Control+p, send: Up }              # Ctrl+P 上移
+    - { when: composing, accept: Control+n, send: Down }            # Ctrl+N 下移
+    - { when: composing, accept: Control+b, send: Left }            # Ctrl+B 左移
+    - { when: composing, accept: Control+f, send: Right }           # Ctrl+F 右移
+    - { when: composing, accept: Control+a, send: Home }            # Ctrl+A 移至行首
+    - { when: composing, accept: Control+e, send: End }             # Ctrl+E 移至行尾
+    - { when: composing, accept: Control+d, send: Delete }          # Ctrl+D 刪除
+    - { when: composing, accept: Control+k, send: Shift+Delete }    # Ctrl+K 刪至行尾
+    - { when: composing, accept: Control+h, send: BackSpace }       # Ctrl+H 退格
+    - { when: composing, accept: Control+g, send: Escape }          # Ctrl+G 取消
+    - { when: composing, accept: Control+bracketleft, send: Escape } # Ctrl+[ 取消
+    - { when: composing, accept: Alt+v, send: Page_Up }             # Alt+V 上翻頁
+    - { when: composing, accept: Control+v, send: Page_Down }       # Ctrl+V 下翻頁
+
+    # ----------------------------------------
+    # 字詞移動快速鍵
+    # ----------------------------------------
+    - { when: composing, accept: ISO_Left_Tab, send: Shift+Left }   # ISO Left Tab 左移一詞
+    - { when: composing, accept: Shift+Tab, send: Shift+Left }      # Shift+Tab 左移一詞
+    - { when: composing, accept: Tab, send: Shift+Right }           # Tab 右移一詞
