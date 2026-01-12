@@ -66,7 +66,6 @@ engine:
     - abc_segmentor            # 標準字母片段
     - affix_segmentor@mkst     # 造詞模式片段（引導鍵: ;）
     - affix_segmentor@liurqry  # 讀音反查片段（引導鍵: ;;）
-    - affix_segmentor@pinyin   # 拼音輸入片段（引導鍵: `）
     - affix_segmentor@phonetic # 注音輸入片段（引導鍵: ';）
 #    - punct_segmentor         # 標點片段（已停用）
     - fallback_segmentor       # 備用片段處理器
@@ -83,7 +82,6 @@ engine:
     - table_translator@fixed   # 固定詞庫翻譯器（支援使用者詞典）
     - table_translator@liurqry # 讀音反查翻譯器
     - table_translator         # 主翻譯器（嘸蝦米字表）
-    - script_translator@pinyin # 拼音翻譯器
     - script_translator@phonetic # 注音翻譯器
 
   # ----------------------------------------
@@ -110,17 +108,17 @@ liu_w2c:
   opencc_config: liu_w2c.json        # OpenCC 設定檔
   option_name: liu_w2c               # 對應的開關名稱
   show_in_comment: true              # 在候選字註解中顯示
-  tags: [ pinyin, mkst, phonetic ]   # 套用於拼音、造詞、注音模式
+  tags: [ mkst, phonetic ]           # 套用於造詞、注音模式
   tips: all                          # 顯示所有提示
 
 # ========================================
 # 臺灣用語轉換設定
 # ========================================
-# 只針對拼音及注音反查進行臺灣用語轉換
+# 只針對注音反查進行臺灣用語轉換
 zh_tw:
   opencc_config: t2tw.json           # 使用繁體轉臺灣正體的 OpenCC 設定
   option_name: zh_tw                 # 對應的開關名稱
-  tags: [ pinyin, phonetic ]         # 只套用於拼音與注音模式
+  tags: [ phonetic ]                 # 只套用於注音模式
 
 # ========================================
 # 簡繁轉換設定
@@ -192,23 +190,6 @@ liurqry:
   closing_tips: 【蝦米】                # 結束時顯示的提示
   initial_quality: 300                 # 優先度設為 300
   tag: liurqry                         # 標籤名稱
-
-# ========================================
-# 拼音翻譯器設定
-# ========================================
-# 引導鍵：反引號（`）
-pinyin:
-  tag: pinyin                          # 標籤名稱
-  dictionary: luna_pinyin              # 使用朙月拼音詞庫
-  prefix: "`"                          # 引導鍵（反引號）
-  suffix: "'"                          # 結束鍵（單引號）
-  preedit_format: &pinyin              # 預編輯格式（顯示 ü 等符號）
-    - xform/([nl])v/$1ü/               # nv, lv → nü, lü
-    - xform/([nl])ue/$1üe/             # nue, lue → nüe, lüe
-    - xform/([jqxy])v/$1u/             # jv, qv, xv, yv → ju, qu, xu, yu
-  tips: 【拼音】                        # 輸入時顯示的提示
-  closing_tips: 【蝦米】                # 結束時顯示的提示
-  initial_quality: 0.2                 # 優先度設為 0.2（較低）
 
 # ========================================
 # 注音翻譯器設定
@@ -291,6 +272,5 @@ recognizer:
     email: ^[a-z][-_.0-9a-z]*@.*$      # 電子郵件格式
     url: ^(www[.]|https?:|ftp:|mailto:).*$  # 網址格式
     phonetic: "';[1qaz2wsxedcrfv5tgbyhnujm8ik,9ol.0p;/6347-]*'?$"  # 注音反查：引導鍵 ';（「-」為「ㄦ」）
-    pinyin: "`[a-z']*'?$"              # 拼音輸入：引導鍵 `
     mkst: "^;[a-z,.'`]*$"              # 造詞模式：引導鍵 ;
     liurqry: ";;[a-z']*'?$"            # 讀音反查：引導鍵 ;;
