@@ -35,7 +35,7 @@ echo
 echo "+----------------------------------+"
 echo "| step 2: 初始化 RIME 嘸蝦米輸入法 |"
 echo "+----------------------------------+"
-cd $RIME_FOLDER && curl -L https://github.com/hsuanyi-chou/rime-liur/archive/refs/heads/master.zip | tar xz
+cd $RIME_FOLDER && curl -L https://github.com/soechin/rime-liur/archive/refs/heads/master.zip | tar xz
 cp -R $RIME_LIUR_FOLDER/Rime/* $RIME_FOLDER
 rm -rf $RIME_LIUR_FOLDER
 echo
